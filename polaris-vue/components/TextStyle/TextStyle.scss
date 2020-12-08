@@ -1,0 +1,17 @@
+@import "../../styles/common";
+
+.Polaris-TextStyle--variationPositive {
+  color: color(green, dark);
+}
+
+.Polaris-TextStyle--variationNegative {
+  color: color(red, dark);
+}
+
+.Polaris-TextStyle--variationStrong {
+  @include text-emphasis-strong;
+}
+
+.Polaris-TextStyle--variationSubdued {
+  @include text-emphasis-subdued;
+}

@@ -1,0 +1,92 @@
+.modal-open {
+  overflow: hidden;
+}
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+}
+.fade {
+  transition: opacity .15s linear;
+}
+
+.modal-backdrop.fade {
+  opacity: 0;
+}
+.modal-backdrop.show {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1040;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  opacity: .5;
+}
+
+.modal-dialog {
+  position: relative;
+  margin: 5px;
+  pointer-events: none;
+  max-width: 620px;
+
+  @media (min-width: 630px) {
+    margin: 5px auto;
+  }
+}
+
+.modal.fade .modal-dialog {
+  transform: translate(0, -100%);
+}
+
+.modal.show .modal-dialog {
+  animation-name: fade;
+  animation-duration: .4s;
+  animation-fill-mode: forwards;
+}
+
+.modal-content {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: .6rem;
+  outline: 0;
+}
+
+.modal-btn {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+@keyframes fade {
+  0% {
+    top: 0;
+    transform: translate(0, -100%);
+  }
+  100% {
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+}

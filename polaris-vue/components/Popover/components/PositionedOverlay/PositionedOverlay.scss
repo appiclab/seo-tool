@@ -1,0 +1,10 @@
+@import "../../../../styles/common.scss";
+
+.Polaris-PositionedOverlay {
+  position: absolute;
+  z-index: z-index(overlay);
+}
+
+.Polaris-PositionedOverlay--calculating {
+  visibility: hidden;
+}

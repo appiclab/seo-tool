@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="<%- shop.primary_locale %>">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%- shop.app_name %></title>
+    <link href="/preloader.css" rel="stylesheet">
+  </head>
+  <body>
+    <input type="hidden" id="shop_origin" value="<%- shop.domain %>">
+    <input type="hidden" id="access_token" value="<%- shop.access_token %>">
+
+    <noscript>We're sorry but Shopify app doesn't work properly without JavaScript enabled. Please enable it to continue.</noscript>
+
+    <div class="preloader" data-role="loader">
+      <div class="loading">
+        <div class="effect-1 effects"></div>
+        <div class="effect-2 effects"></div>
+        <div class="effect-3 effects"></div>
+      </div>
+      
+      <script>
+        document.querySelector("[data-role=loader]").style.display = 'block';
+      </script>
+    </div>
+
+    <div id="root"></div>
+  </body>
+</html>

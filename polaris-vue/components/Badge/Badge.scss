@@ -1,0 +1,36 @@
+@import "../../styles/common";
+
+$height: rem(20px);
+$horizontal-padding: ($height / 2);
+
+.Polaris-Badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 $horizontal-padding;
+  background-color: color(sky);
+  border: 2px solid color(white);
+  border-radius: $height;
+  font-size: rem(13px);
+  line-height: $height;
+  color: color(ink, light);
+}
+
+.Polaris-Badge--statusSuccess {
+  background-color: color(green, light);
+  color: color(green, text);
+}
+
+.Polaris-Badge--statusInfo {
+  background-color: color(blue, light);
+  color: color(blue, text);
+}
+
+.Polaris-Badge--statusAttention {
+  background-color: color(yellow, light);
+  color: color(yellow, text);
+}
+
+.Polaris-Badge--statusWarning {
+  background-color: color(orange, light);
+  color: color(orange, text);
+}
