@@ -28,13 +28,18 @@ async function addOrUpdateUser(payload) {
   const { access_token, shop_origin } = payload;
   
   try {
-    const shop = await client.query(`SELECT shop_origin FROM users`);
+    const shop = await client.query(`SELECT shop_origin FROM users WHERE shop_origin='${shop_origin}'`);
 
     if (shop.rowCount) {
-      return await client.query(`UPDATE users SET access_token='${access_token}' WHERE shop_origin='${shop_origin}'`);
+      return await client.query(
+        `UPDATE users SET access_token='${access_token}', updated_at=CURRENT_TIMESTAMP WHERE shop_origin='${shop_origin}'`
+      );
     }
 
-    return await client.query(`INSERT INTO users (shop_origin, access_token) VALUES ('${shop_origin}', '${access_token}')`);
+
+    return await client.query(
+      `INSERT INTO users (shop_origin, access_token) VALUES ('${shop_origin}', '${access_token}')`
+    );
   } catch (error) {
     console.log("error", error);
   }
