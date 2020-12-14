@@ -2,7 +2,7 @@ const custom = require("../webpack.config.js")(null, "development");
 
 module.exports = {
   "stories": [
-    "../polaris-vue/components/**/*.stories.js"
+    "../polaris-vue/src/components/**/*.stories.js"
   ],
   "addons": [
     "@storybook/addon-links",

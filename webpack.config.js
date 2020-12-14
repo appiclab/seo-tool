@@ -2,7 +2,6 @@ const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (env, argv) => {
@@ -105,7 +104,7 @@ module.exports = (env, argv) => {
     resolve: {
       alias: {
         vue$: "vue/dist/vue.esm.js",
-        "polaris-vue": path.resolve(__dirname, "./polaris-vue/"),
+        "polaris-vue": path.resolve(__dirname, "./polaris-vue/lib"),
       },
       extensions: ["*", ".js", ".vue", ".json"],
     },
@@ -118,7 +117,6 @@ module.exports = (env, argv) => {
   if (isProductionBuild) {
     config.devtool = false;
     config.plugins = (config.plugins || []).concat([
-      new CleanWebpackPlugin(),
       new MiniCssExtractPlugin({
         filename: "[name].[hash:8].css"
       })

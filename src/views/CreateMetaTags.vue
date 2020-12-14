@@ -12,15 +12,12 @@
             <polaris-list-item>Use the tags below. Place the cursor in the required place and click on the required tag to insert its value into the meta field.</polaris-list-item>
           </polaris-list>
         </polaris-card-section>
-        <template v-if="page_type">
+        <template v-if="get_tags.length">
           <polaris-card-section style="border-top: none; padding-bottom: 0;">
-            <polaris-stack wrap v-if="tags.length">
-              <polaris-stack-item v-for="tag in tags" :key="tag.value">
+            <polaris-stack wrap>
+              <polaris-stack-item v-for="tag in get_tags" :key="tag.value">
                 <polaris-tag @click="tagHandler" :data-tag="tag.value">{{ tag.label }}</polaris-tag>
               </polaris-stack-item>
-            </polaris-stack>
-            <polaris-stack distribution="center" v-else>
-              <polaris-spinner color="teal" size="large" />
             </polaris-stack>
           </polaris-card-section>
         </template>
@@ -32,8 +29,8 @@
           <polaris-select
             label="Select the page type"
             placeholder="Select…"
-            :options="options"
-            @change="fetch"
+            :options="page_type_options"
+            @change="pageTypeChange"
           />
           <template v-for="metatag in metatags">
             <polaris-text-field
@@ -61,65 +58,44 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-
-const options = [
-  { label: "Page", value: "page" },
-  { label: "Product", value: "product" },
-  { label: "Article", value: "article" },
-  { label: "Blog", value: "blog" }
-];
-
-const metatags = {
-  title: {
-    ref: "title",
-    value: "Meta Title",
-    label: "Meta Title",
-    placeholder: "Meta Title",
-    multiline: false,
-  },
-  description:{
-    ref: "description",
-    multiline: true,
-    value: "Meta Description",
-    label: "Meta Description",
-    placeholder: "Meta Description"
-  },
-  alt: {
-    ref: "alt",
-    multiline: true,
-    value: "Alt Text for all images on the page",
-    label: "Alt Text for all images on the page",
-    placeholder: "Alt Text for all images on the page"
-  }
-};
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   components: {},
   data() {
     return {
       timer: null,
-      tasksTimer: null,
       focused: null,
-      metatags,
-      options
-    }
-  },
-  watch: {
-    tasks() {
-      clearInterval(this.tasksTimer);
-
-      if (this.tasks.length) {
-        this.checkTasks();
+      metatags: {
+        title: {
+          ref: "title",
+          value: "Meta Title",
+          label: "Meta Title",
+          placeholder: "Meta Title",
+          multiline: false,
+        },
+        description:{
+          ref: "description",
+          multiline: true,
+          value: "Meta Description",
+          label: "Meta Description",
+          placeholder: "Meta Description"
+        },
+        alt: {
+          ref: "alt",
+          multiline: true,
+          value: "Alt Text for all images on the page",
+          label: "Alt Text for all images on the page",
+          placeholder: "Alt Text for all images on the page"
+        }
       }
     }
   },
   computed: {
+    ...mapGetters(['get_tags']),
     ...mapState({
-      page_type: state => state.page_type,
-      tags: state => state.tags,
-      loading: state => state.loading,
-      tasks: state => state.tasks
+      page_type_options: state => state.page_type_options,
+      page_type: state => state.page_type
     }),
     disabledFields() {
       return !this.page_type || this.loading;
@@ -132,7 +108,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["fetch", "submit_handler", "check"]),
+    ...mapActions(["pageTypeChange", "submit_handler"]),
     onFocus(e) {
       clearTimeout(this.timer)
       this.focused = e;
@@ -140,7 +116,7 @@ export default {
     onBlur(e) {
       this.timer = setTimeout(() => {
         this.focused = null;
-      }, 500)
+      }, 200);
     },
     tagHandler(event) {
       if (this.focused) {
@@ -167,10 +143,6 @@ export default {
         textarea.focus();
       }
     },
-    checkTasks() {
-      this.tasksTimer = setInterval(this.check, 1000);
-    }
   },
-  created() {}
 };
 </script>

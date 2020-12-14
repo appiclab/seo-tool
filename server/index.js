@@ -1,6 +1,5 @@
 require("isomorphic-fetch");
-
-const { init } = require("./database");
+require("./postgreSQL").init();
 
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 const CONFIG = require("./config");
@@ -14,7 +13,6 @@ require("./helpers/shopify.js").call(app, CONFIG.cookies); // Shopify middleware
 const http = require("http")
 const server = http.createServer(app.callback())
 
-init();
 
 server.listen(PORT, () => {
   let shop = "SHOP_ORIGIN.myshopify.com";

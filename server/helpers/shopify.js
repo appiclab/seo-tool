@@ -1,9 +1,9 @@
-const { api } = require("../database");
+const db = require("../postgreSQL");
+
 // Import Shopify/Koa modules to assist with authentication
 const { default: createShopifyAuth } = require("@shopify/koa-shopify-auth");
 const { verifyRequest } = require("@shopify/koa-shopify-auth");
-const proxy = require('@shopify/koa-shopify-graphql-proxy');
-const { ApiVersion } = require('@shopify/koa-shopify-graphql-proxy');
+
 
 module.exports = function (CONFIG) {
   /* Shopify middleware */
@@ -32,15 +32,12 @@ module.exports = function (CONFIG) {
         ctx.cookies.set("accessToken", access_token, CONFIG);
         ctx.cookies.set("shopOrigin", shop_origin, CONFIG);
 
-        await api.setUser({
-          shop_origin,
-          access_token
-        });
+        await db.addOrUpdateUser({ shop_origin, access_token });
 
         ctx.redirect("/");
 
         // await require('./subscriptions')(ctx, accessToken, shop);
-        // return ctx.redirect(`https://${shop}/admin/apps/${process.env.SHOPIFY_APP_NAME}`);
+        // return ctx.redirect(`https://${shop_origin}/admin/apps/${process.env.SHOPIFY_APP_NAME}`);
       },
     })
   );
