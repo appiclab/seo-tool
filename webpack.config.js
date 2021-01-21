@@ -6,14 +6,14 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (env, argv) => {
   const isProductionBuild = argv.mode === "production";
-  const publicPath = isProductionBuild ? "/" : "";
+  const publicPath = isProductionBuild ? "/seo-tool/" : "";
   const config = {
     context: path.resolve(__dirname, "src"),
     entry: ["@babel/polyfill", "./main.js"],
     output: {
-      path: path.resolve(__dirname, "public"),
+      path: path.resolve(__dirname, "dist"),
       filename: "[name].[hash:8].js",
-      publicPath
+      publicPath,
     },
     module: {
       rules: [
@@ -31,29 +31,24 @@ module.exports = (env, argv) => {
               loader: "ejs-webpack-loader",
               options: {
                 data: {
-                  shop: isProductionBuild ? {
-                    app_name: "<%- shop.app_name %>",
-                    primary_locale: "<%- shop.primary_locale %>", 
-                    domain: "<%- shop.domain %>",
-                    access_token: "<%- shop.access_token %>"
-                  } : {
+                  shop: {
                     app_name: "SEO Tool",
-                    primary_locale: "en", 
+                    primary_locale: "en",
                     domain: "vm-store-dev.myshopify.com",
-                    access_token: "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"
+                    access_token: "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",
                   },
-                }
-              }
-            }
-          ]
+                },
+              },
+            },
+          ],
         },
         {
           test: /\.(c|sa|sc)ss$/i,
           use: [
             isProductionBuild ? MiniCssExtractPlugin.loader : "style-loader",
             "css-loader",
-            "sass-loader"
-          ]
+            "sass-loader",
+          ],
         },
         {
           test: /\.js$/i,
@@ -61,13 +56,13 @@ module.exports = (env, argv) => {
           use: {
             loader: "babel-loader",
             options: {
-              presets: ["@babel/preset-env"]
-            }
-          }
+              presets: ["@babel/preset-env"],
+            },
+          },
         },
         {
           test: /\.vue$/,
-          use: "vue-loader"
+          use: "vue-loader",
         },
         {
           test: /\.(png|jpe?g|gif)$/i,
@@ -81,22 +76,22 @@ module.exports = (env, argv) => {
           test: /\.svg$/,
           loader: "svg-inline-loader",
           options: {
-            removingTagAttrs: ["fill', 'fill-rule"]
-          }
-        }
-      ]
+            removingTagAttrs: ["fill', 'fill-rule"],
+          },
+        },
+      ],
     },
     plugins: [
       new VueLoaderPlugin(),
       new HtmlWebpackPlugin({
         template: "index.ejs",
-        filename: "index.html"
+        filename: "index.html",
       }),
       new CopyWebpackPlugin({
         patterns: [
-          { 
-            from: path.resolve(__dirname, "src", "assets", "preloader.css"), 
-            to: "" 
+          {
+            from: path.resolve(__dirname, "src", "assets", "preloader.css"),
+            to: "",
           },
         ],
       }),
@@ -110,20 +105,20 @@ module.exports = (env, argv) => {
     },
     devtool: "eval-source-map",
     devServer: {
-      stats: "errors-only"
-    }
-  }
+      stats: "errors-only",
+    },
+  };
 
   if (isProductionBuild) {
     config.devtool = false;
     config.plugins = (config.plugins || []).concat([
       new MiniCssExtractPlugin({
-        filename: "[name].[hash:8].css"
-      })
+        filename: "[name].[hash:8].css",
+      }),
     ]);
 
     config.optimization = {};
   }
 
   return config;
-}
+};
